@@ -1,15 +1,15 @@
 import React, {
-	Component,
-	View,
-	Text,
-	ScrollView,
+  Component,
+  View,
+  Text,
+  ScrollView,
   TouchableOpacity,
   ListView,
   InteractionManager,
 } from 'react-native';
 
 import _ from 'underscore';
-import { subscribe, unsubscribe, cacheItems, stopClearCache } from './store/actions';
+import { subscribe, unsubscribe, batchActions } from './store/actions';
 import Crater from './store/crater';
 import { connect } from 'react-redux/native';
 
@@ -31,8 +31,6 @@ class PostComments extends React.Component {
 
   componentWillMount() {
     const { dispatch, _id } = this.props;
-    // Stops the cache from getting killed until we navigate away
-    dispatch(stopClearCache('commentsCache', _id));
 
     InteractionManager.runAfterInteractions(() => {
       
@@ -46,16 +44,13 @@ class PostComments extends React.Component {
       ).then(
         () => {
           console.log('done subscribing to comments!');
-          dispatch({
+          dispatch(batchActions({
             type: 'SET_STATUS',
             payload: 'Enjoy'
-          });
-
-          dispatch({
+          }, {
             type: 'SYNC_COMMENTS',
             payload: _.map(Crater.collections.comments, comment => comment)
-          });
-          
+          }));
         },
         error => dispatch({
           type: 'SET_STATUS',
@@ -69,9 +64,6 @@ class PostComments extends React.Component {
     const { dispatch, _id, comments } = this.props;
     InteractionManager.runAfterInteractions(() => {
       dispatch(unsubscribe('commentsList'));
-
-      // This cache will only last 30 seconds
-      dispatch(cacheItems('commentsCache', _id, comments));
 
       dispatch({
         type: 'SYNC_COMMENTS',
@@ -98,36 +90,31 @@ class PostComments extends React.Component {
     );
   }
 
+  handleBack = () => this.props.navigator.pop();
+
   render() {
     return (
       <View style={[styles.container]}>
-      	<View style={styles.navbar}>
-					<TouchableOpacity onPress={() => this.props.navigator.pop()}>
-						<View style={{width:30,marginRight: 10}}>
-      				<Text style={styles.navbarText}>&lt;&lt;</Text>
-    				</View>
-    			</TouchableOpacity>
-    			<ScrollView style={{flex:1,paddingTop:10,paddingBottom:10}} horizontal={true}>
-    				<Text style={styles.navbarText}>{this.props.title}</Text>
-    			</ScrollView>
-      	</View>
-      	<ListView 
-      		style={[styles.container, {backgroundColor:'white'}]}
-      		dataSource={this.ds.cloneWithRows(this.props.comments)}
-      		renderRow={this.renderComment.bind(this)} />
+        <View style={styles.navbar}>
+          <TouchableOpacity onPress={this.handleBack}>
+            <View style={{width:30,marginRight: 10}}>
+              <Text style={styles.navbarText}>&lt;&lt;</Text>
+            </View>
+          </TouchableOpacity>
+          <ScrollView style={{flex:1,paddingTop:10,paddingBottom:10}} horizontal={true}>
+            <Text style={styles.navbarText}>{this.props.title}</Text>
+          </ScrollView>
+        </View>
+        <ListView 
+          style={[styles.container, {backgroundColor:'white'}]}
+          dataSource={this.ds.cloneWithRows(this.props.comments)}
+          renderRow={this.renderComment.bind(this)} />
       </View>
     );
   }
 }
 
-function structureComments({ comments, commentsCache }, ownProps) {
-  if (!comments.length) {
-    // If we found cachable comments, use it!
-    if (commentsCache[ownProps._id]) {
-      return commentsCache[ownProps._id];
-    }
-    return [];
-  }
+function structureComments({ comments }, ownProps) {
   comments = comments.sort((c1, c2) => {
     if (c1.score > c2.score) {
       return -1;

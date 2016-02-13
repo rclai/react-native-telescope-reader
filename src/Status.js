@@ -1,7 +1,7 @@
 import React, {
-	Component,
-	View,
-	Text,
+  Component,
+  View,
+  Text,
   LayoutAnimation,
 } from 'react-native';
 
@@ -36,8 +36,8 @@ export class Status extends Component {
     if (!this.state.visible) return false;
     return (
       <View style={styles}>
-  			<Text>{this.props.status}...</Text>
-  		</View>
+        <Text>{this.props.status}...</Text>
+      </View>
     );
   }
 }

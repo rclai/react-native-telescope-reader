@@ -1,8 +1,8 @@
 import React, {
-	Component,
-	View,
-	ListView,
-	Text,
+  Component,
+  View,
+  ListView,
+  Text,
 } from 'react-native';
 
 import { connect } from 'react-redux/native';
@@ -12,7 +12,7 @@ import styles from './styles';
 import Post from './Post';
 
 class PostsList extends Component {
-	constructor(props) {
+  constructor(props) {
     super(props);
     this.ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => {
@@ -34,26 +34,26 @@ class PostsList extends Component {
 
   render() {
     return (
-      <View style={[styles.container,{backgroundColor:'white'}]}>
-      	<View style={styles.navbar}>
-      		<Text style={styles.navbarText}>Telescope Reader</Text>
-      	</View>
-      	<ListView
+      <View style={[styles.container, styles.whiteBackground]}>
+        <View style={styles.navbar}>
+          <Text style={styles.navbarText}>Telescope Reader</Text>
+        </View>
+        <ListView
           initialListSize={10}
-      		dataSource={this.state.posts}
-      		renderRow={(post, index) => (
-      			<Post 
-      				key={index} 
-      				{...post}
-      				navigator={this.props.navigator} />
-    			)} />
+          dataSource={this.state.posts}
+          renderRow={(post, index) => (
+            <Post 
+              key={index} 
+              {...post}
+              navigator={this.props.navigator} />
+          )} />
       </View>
     );
   }
 }
 
 export default connect(
-	state => ({
-		posts: state.posts
-	})
+  state => ({
+    posts: state.posts
+  })
 )(PostsList);

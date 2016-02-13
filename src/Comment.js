@@ -1,7 +1,7 @@
 import React, {
-	Component,
-	View,
-	Text,
+  Component,
+  View,
+  Text,
 } from 'react-native';
 
 import moment from 'moment';
@@ -14,7 +14,7 @@ export default class Comment extends Component {
   render() {
     return (
       <View>
-      	<View style={{flexDirection:'row',alignItems:'center',justifyContent:'flex-start'}}>
+        <View style={{flexDirection:'row',alignItems:'center',justifyContent:'flex-start'}}>
           <Text style={{fontWeight:'bold',marginRight: 5}}>{this.props.author}</Text> 
           <Text style={{fontSize:12,marginRight: 5}}>{moment(this.props.createdAt).fromNow()}</Text>
           <Text style={{fontSize:12}}>{this.props.upvotes} points</Text>

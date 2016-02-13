@@ -2,11 +2,11 @@
 
 // Core
 import React, { 
-	Component, 
-	Navigator,
-	View,
-	Platform,
-	//BackAndroid,
+  Component, 
+  Navigator,
+  View,
+  Platform,
+  BackAndroid,
 } from 'react-native';
 
 //console.log('BackAndroid', BackAndroid)
@@ -22,53 +22,56 @@ import Status from './Status';
 import { Provider } from 'react-redux/native';
 import store from './store';
 
-/*let navigator;
-
-BackAndroid.addListener('hardwareBackPress', () => {
-	if (navigator && navigator.getCurrentRoutes().length > 1) {
-		navigator.pop();
-		return true;
-	}
-	return false;
-});*/
-
 export default class App extends Component {
 
   constructor(props) {
     super(props);
-
-    /*React.*/
+    this._initialRoute = { component: PostsList };
   }
 
-  _renderScene(route, navigator) {
-  	return (
-  		<route.component navigator={navigator} {...route.passProps} />
-		);
+  componentDidMount() {
+    BackAndroid && BackAndroid.addEventListener('hardwareBackPress', () => {
+      if (this.navigator && this.navigator.getCurrentRoutes().length > 1) {
+        this.navigator.pop();
+        return true;
+      }
+      return false;
+    });
   }
+
+  _configureScene = (route) => {
+    if (route.configureScene) {
+      return route.configureScene;
+    } else if (Platform.OS === 'ios') {
+      return Navigator.SceneConfigs.FloatFromRight;
+    } else {
+      return Navigator.SceneConfigs.FadeAndroid;
+    }
+  };
+
+  _renderScene = (route, navigator) => (
+    <route.component navigator={navigator} {...route.passProps} />
+  );
+
+  _handleRef = (ref) => this.navigator = ref;
+
+  _renderProvider = () => (
+    <View style={[styles.container]}>
+      <Navigator
+        ref={this._handleRef}
+        style={[styles.container, styles.whiteBackground]}
+        initialRoute={this._initialRoute}
+        configureScene={this._configureScene}
+        renderScene={this._renderScene} />
+      <Status />
+    </View>
+  );
 
   render() {
     return (
-    	<Provider store={store}>
-	    	{() => (
-		    	<View style={[styles.container]}>
-			      <Navigator
-			      	ref={ref => { navigator = ref; }}
-			      	style={[styles.container, {backgroundColor:'#1B0732'}]}
-			      	initialRoute={{ component: PostsList }}
-			      	configureScene={route => {
-			      		if (route.configureScene) {
-			      			return route.configureScene;
-			      		} else if (Platform.OS === 'ios') {
-			      			return Navigator.SceneConfigs.FloatFromRight;
-			      		} else {
-			      			return Navigator.SceneConfigs.FadeAndroid;
-			      		}
-			      	}}
-			      	renderScene={this._renderScene}	/>
-		      	<Status />
-		    	</View>
-	    	)}
-    	</Provider>
+      <Provider store={store}>
+        {this._renderProvider}
+      </Provider>
     );
   }
 }
