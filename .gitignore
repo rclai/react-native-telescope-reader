@@ -32,3 +32,6 @@ local.properties
 #
 node_modules/
 npm-debug.log
+
+react-native-telescope-reader.sublime-project
+react-native-telescope-reader.sublime-workspace
