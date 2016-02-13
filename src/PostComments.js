@@ -20,6 +20,8 @@ import Comment from './Comment';
 class PostComments extends React.Component {
   constructor(props) {
     super(props);
+    
+    this.subId = undefined;
 
     this.ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => {
@@ -42,7 +44,8 @@ class PostComments extends React.Component {
           postId: this.props._id,
         }])
       ).then(
-        () => {
+        (subId) => {
+          this.subId = subId;
           console.log('done subscribing to comments!');
           dispatch(batchActions({
             type: 'SET_STATUS',
@@ -63,7 +66,7 @@ class PostComments extends React.Component {
   componentWillUnmount() {
     const { dispatch, _id, comments } = this.props;
     InteractionManager.runAfterInteractions(() => {
-      dispatch(unsubscribe('commentsList'));
+      this.subId && dispatch(unsubscribe(this.subId));
 
       dispatch({
         type: 'SYNC_COMMENTS',

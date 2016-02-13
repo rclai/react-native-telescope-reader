@@ -8,25 +8,15 @@ export const batchActions = (...actions) => ({
 export const subscribe = (name, params) => dispatch => new Promise((resolve, reject) => {
   let subId = Crater.subscribe(name, params, (error) => {
     error && reject(error);
-    !error && resolve();
+    !error && resolve(subId);
   });
 
-  dispatch(batchActions({
+  dispatch({
     type: 'SET_STATUS',
     payload: 'Loading',
-  }, 
-  // By storing the subId, we can immediately
-  // cancel it in case we navigate, for example
-  {
-    type: 'STORE_SUB_ID',
-    payload: {
-      subName: name,
-      subId: subId,
-    },
-  }));
+  });
 });
 
-export const unsubscribe = (subName) => (dispatch, getState) => {
-  const { subIdMap } = getState();
-  subIdMap[subName] && Crater.unsubscribe(subIdMap[subName]);
+export const unsubscribe = (subId) => (dispatch, getState) => {
+  Crater.unsubscribe(subId);
 };

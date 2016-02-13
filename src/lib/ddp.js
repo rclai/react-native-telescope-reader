@@ -117,7 +117,7 @@ class DDPClient extends EventEmitter{
   _message(data) {
     var self = this;
     data = EJSON.parse(data);
-
+    //console.log('ddp msg', data);
     // TODO: 'addedBefore' -- not yet implemented in Meteor
     // TODO: 'movedBefore' -- not yet implemented in Meteor
 

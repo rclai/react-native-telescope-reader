@@ -5,7 +5,6 @@ let initialState = {
   loading: true,
   posts: [],
   comments: [],
-  subIdMap: {},
 };
 
 export const batchReducers = (reducer) => {
@@ -35,15 +34,6 @@ export default function reducers(state = initialState, action) {
       return {
         ...state,
         comments: action.payload,
-      };
-    case 'STORE_SUB_ID':
-      var { subName, subId } = action.payload;
-      return {
-        ...state,
-        subIdMap: {
-          ...state.subIdMap,
-          [subName]: subId,
-        },
       };
     default:
       return state;
