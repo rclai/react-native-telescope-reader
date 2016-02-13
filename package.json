@@ -1,0 +1,17 @@
+{
+  "name": "TelescopeReader",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "react-native start"
+  },
+  "dependencies": {
+    "ejson": "^2.1.2",
+    "moment": "^2.10.6",
+    "react-native": "^0.17.0",
+    "react-redux": "^3.1.2",
+    "redux": "^3.0.5",
+    "redux-thunk": "^1.0.2",
+    "underscore": "^1.8.3"
+  }
+}
