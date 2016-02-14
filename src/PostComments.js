@@ -15,6 +15,8 @@ import { connect } from 'react-redux/native';
 
 import styles from './styles';
 
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 import Comment from './Comment';
 
 class PostComments extends React.Component {
@@ -101,7 +103,7 @@ class PostComments extends React.Component {
         <View style={styles.navbar}>
           <TouchableOpacity onPress={this.handleBack}>
             <View style={{width:30,marginRight: 10}}>
-              <Text style={styles.navbarText}>&lt;&lt;</Text>
+              <Icon name="chevron-left" color="white" size={20} />
             </View>
           </TouchableOpacity>
           <ScrollView style={{flex:1,paddingTop:10,paddingBottom:10}} horizontal={true}>

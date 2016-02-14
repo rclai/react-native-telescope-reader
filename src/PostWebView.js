@@ -9,6 +9,8 @@ import React, {
 
 import styles from './styles';
 
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 export default class PostWebView extends Component {
 
   handleBack = () => this.props.navigator.pop();
@@ -19,7 +21,7 @@ export default class PostWebView extends Component {
         <View style={styles.navbar}>
           <TouchableOpacity onPress={this.handleBack}>
             <View style={{width:30,marginRight: 10}}>
-              <Text style={styles.navbarText}>&lt;&lt;</Text>
+              <Icon name="chevron-left" color="white" size={20} />
             </View>
           </TouchableOpacity>
           <ScrollView style={{flex:1,paddingTop:10,paddingBottom:10}} horizontal={true}>
