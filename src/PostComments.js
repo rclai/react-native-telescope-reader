@@ -84,14 +84,14 @@ class PostComments extends React.Component {
     );
   }
 
-  renderComment(comment) {
+  renderComment = (comment) => {
     return (
       <View key={comment._id} style={{paddingLeft: 10,paddingRight:10,paddingTop:5,paddingBottom:5}}>
         <Comment {..._.omit(comment, 'childrenComments')} />
         {this.renderChildComments(comment.childrenComments)}
       </View>
     );
-  }
+  };
 
   handleBack = () => this.props.navigator.pop();
 
@@ -111,7 +111,7 @@ class PostComments extends React.Component {
         <ListView 
           style={[styles.container, {backgroundColor:'white'}]}
           dataSource={this.ds.cloneWithRows(this.props.comments)}
-          renderRow={this.renderComment.bind(this)} />
+          renderRow={this.renderComment} />
       </View>
     );
   }
