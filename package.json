@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "ejson": "^2.1.2",
+    "immutable": "^3.7.6",
     "moment": "^2.10.6",
     "react-native": "^0.19.0",
     "react-native-vector-icons": "^1.1.1",
