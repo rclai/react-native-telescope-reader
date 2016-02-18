@@ -27,6 +27,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#f1f1f1',
   },
+  drawerItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderColor: '#f1f1f1',
+  },
+  drawerItemText: {},
 });
 
 export default styles;
