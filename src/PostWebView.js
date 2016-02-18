@@ -33,7 +33,7 @@ export default class PostWebView extends Component {
           javaScriptEnabled={true}
           startInLoadingState={true}
           renderLoading={Loading}
-          url={this.props.url || undefined}
+          source={this.props.url && { uri: this.props.url } || undefined}
           html={!this.props.url && this.props.htmlBody ? this.props.htmlBody : undefined} />
       </View>
     )
